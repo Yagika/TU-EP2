@@ -15,9 +15,15 @@ public class Test {
 
         //test classes BodyQueue and BodyAccelerationMap
 
-        /* TODO: remove this line
 
         // create three bodies
+        /*Body sun = new Body(1.989e30,new Vector3(0,0,0),new Vector3(0,0,0));
+        Body earth = new Body(5.972e24,new Vector3(-1.394555e11,5.103346e10,0),new Vector3
+                (-10308.53,-28169.38,0));
+        Body mercury = new Body(3.301e23,new Vector3(-5.439054e10,9.394878e9,0),new Vector3
+                (-17117.83,-46297.48,-1925.57));
+        Body venus = new Body(4.86747e24,new Vector3(-1.707667e10,1.066132e11,2.450232e9),new
+                Vector3(-34446.02,-5567.47,2181.10));*/
         Body sun = new Body(1.989e30,new Vector3(0,0,0),new Vector3(0,0,0));
         Body earth = new Body(5.972e24,new Vector3(-1.394555e11,5.103346e10,0),
                 new Vector3(-10308.53,-28169.38,0));
@@ -64,7 +70,7 @@ public class Test {
         testValue(bam.get(earth).distanceTo(new Vector3(0,0,0)), 0);
         testIdentity(bam.get(mercury),null);
 
-        // TODO: remove this line */
+
 
     }
 
