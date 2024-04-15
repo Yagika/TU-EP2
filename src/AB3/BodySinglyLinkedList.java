@@ -13,6 +13,18 @@ import AB2.Body;
 public class BodySinglyLinkedList {
 
     //TODO: declare variables.
+    private Node head;
+    private int size;
+    private static class Node {
+        Body body;
+        Node next;
+
+        Node(Body body) {
+            this.body = body;
+            this.next = null;
+        }
+    }
+
 
     /**
      * Initializes 'this' as an empty list.
@@ -20,6 +32,8 @@ public class BodySinglyLinkedList {
     public BodySinglyLinkedList() {
 
         // TODO: implement constructor.
+        head = null;
+        size = 0;
     }
 
     /**
@@ -32,7 +46,9 @@ public class BodySinglyLinkedList {
     public BodySinglyLinkedList(BodySinglyLinkedList list) {
 
         // TODO: implement constructor.
-    }
+
+        }
+
 
     /**
      * Inserts the specified element 'b' at the beginning of this list.
@@ -42,6 +58,10 @@ public class BodySinglyLinkedList {
     public void addFirst(Body b) {
 
         // TODO: implement method.
+        Node newNode = new Node(b);
+        newNode.next = head;
+        head = newNode;
+        size++;
     }
 
     /**
@@ -52,6 +72,7 @@ public class BodySinglyLinkedList {
     public void addLast(Body b) {
 
         // TODO: implement method.
+
     }
 
     /**
