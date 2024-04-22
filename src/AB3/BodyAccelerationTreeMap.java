@@ -20,8 +20,7 @@ public class BodyAccelerationTreeMap {
     private static class Node {
         Body key;
         Vector3 value;
-        Node left;
-        Node right;
+        Node left, right;
 
         Node(Body key, Vector3 value) {
             this.key = key;
@@ -145,6 +144,17 @@ public class BodyAccelerationTreeMap {
             toStringHelper(node.left, sb);
         }
     }
-}
+    public AB3.BodyQueue getMaxAndMin(Body key){
+        for (int i = 0; i < ; i++) {
+            if (){
 
+            }
+        }
+        if (this == null) {
+            return AB3.BodyQueue[];
+        }else {
+            return new AB3.BodyQueue[];
+        }
+    }
+}
 // TODO: define further classes, if needed (either here or in a separate file).

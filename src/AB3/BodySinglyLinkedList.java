@@ -15,6 +15,7 @@ public class BodySinglyLinkedList {
     //TODO: declare variables.
     private Node head;
     private int size;
+
     private static class Node {
         Body body;
         Node next;
@@ -44,10 +45,10 @@ public class BodySinglyLinkedList {
      * @param list the list from which elements are copied to the new list, list != null.
      */
     public BodySinglyLinkedList(BodySinglyLinkedList list) {
-
         // TODO: implement constructor.
-
-        }
+        this.head = list.head;
+        this.size=list.size();
+    }
 
 
     /**
