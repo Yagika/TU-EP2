@@ -13,19 +13,9 @@ import AB2.Body;
 public class BodySinglyLinkedList {
 
     //TODO: declare variables.
-    private Node head;
+    private ListNode head;
+    private ListNode tail;
     private int size;
-
-    private static class Node {
-        Body body;
-        Node next;
-
-        Node(Body body) {
-            this.body = body;
-            this.next = null;
-        }
-    }
-
 
     /**
      * Initializes 'this' as an empty list.
@@ -33,8 +23,6 @@ public class BodySinglyLinkedList {
     public BodySinglyLinkedList() {
 
         // TODO: implement constructor.
-        head = null;
-        size = 0;
     }
 
     /**
@@ -45,11 +33,17 @@ public class BodySinglyLinkedList {
      * @param list the list from which elements are copied to the new list, list != null.
      */
     public BodySinglyLinkedList(BodySinglyLinkedList list) {
-        // TODO: implement constructor.
-        this.head = list.head;
-        this.size=list.size();
-    }
 
+        // TODO: implement constructor.
+        ListNode current = list.head;
+        if (current == null) {
+            return;
+        }
+        while (current != null) {
+            addLast(current.getBody());
+            current = current.getNext();
+        }
+    }
 
     /**
      * Inserts the specified element 'b' at the beginning of this list.
@@ -59,9 +53,11 @@ public class BodySinglyLinkedList {
     public void addFirst(Body b) {
 
         // TODO: implement method.
-        Node newNode = new Node(b);
-        newNode.next = head;
-        head = newNode;
+        if (head == null) {
+            head = tail = new ListNode(b, null);
+        } else {
+            head = new ListNode(b, head);
+        }
         size++;
     }
 
@@ -73,7 +69,14 @@ public class BodySinglyLinkedList {
     public void addLast(Body b) {
 
         // TODO: implement method.
-
+        if (head == null) {
+            head = tail = new ListNode(b, null);
+        } else {
+            ListNode n = new ListNode(b, null);
+            tail.setNext(n);
+            tail = n;
+        }
+        size++;
     }
 
     /**
@@ -83,7 +86,10 @@ public class BodySinglyLinkedList {
     public Body getLast() {
 
         // TODO: implement method.
-        return null;
+        if (head == null) {
+            return null;
+        }
+        return tail.getBody();
     }
 
     /**
@@ -93,7 +99,10 @@ public class BodySinglyLinkedList {
     public Body getFirst() {
 
         // TODO: implement method.
-        return null;
+        if (head == null) {
+            return null;
+        }
+        return head.getBody();
     }
 
     /**
@@ -106,7 +115,16 @@ public class BodySinglyLinkedList {
     public Body pollFirst() {
 
         // TODO: implement method.
-        return null;
+        if (head == null) {
+            return null;
+        }
+        Body toReturnBody = head.getBody();
+        size--;
+        head = head.getNext();
+        if (head == null) {
+            tail = null;
+        }
+        return toReturnBody;
     }
 
     /**
@@ -118,6 +136,24 @@ public class BodySinglyLinkedList {
     public Body pollLast() {
 
         // TODO: implement method.
+        if (tail != null) {
+            size--;
+            ListNode current = head;
+            if (current == tail) {
+                Body toReturnBody = tail.getBody();
+                tail = head = null;
+                return toReturnBody;
+            }
+            while (current.getNext() != null) {
+                if (current.getNext() == tail) {
+                    current.setNext(null);
+                    Body toReturnBody = tail.getBody();
+                    tail = current;
+                    return toReturnBody;
+                }
+                current = current.getNext();
+            }
+        }
         return null;
     }
 
@@ -132,6 +168,18 @@ public class BodySinglyLinkedList {
     public void add(int i, Body b) {
 
         // TODO: implement method.
+        if (i == 0) {
+            addFirst(b);
+        } else if (i == size()) {
+            addLast(b);
+        } else {
+            ListNode predecessor = head;
+            for (;i != 1; i--) {
+                predecessor = predecessor.getNext();
+            }
+            predecessor.setNext(new ListNode(b, predecessor.getNext()));
+            size++;
+        }
     }
 
     /**
@@ -144,7 +192,11 @@ public class BodySinglyLinkedList {
     public Body get(int i) {
 
         // TODO: implement method.
-        return null;
+        ListNode current = head;
+        for (;i > 0; i--) {
+            current = current.getNext();
+        }
+        return current.getBody();
     }
 
     /**
@@ -159,7 +211,13 @@ public class BodySinglyLinkedList {
     public int indexOf(Body b) {
 
         // TODO: implement method.
-        return -2;
+        ListNode current = head;
+        for (int i = 0; current != null; current = current.getNext(), i++) {
+            if (current.getBody() == b) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     /**
@@ -168,8 +226,33 @@ public class BodySinglyLinkedList {
     public int size() {
 
         // TODO: implement method.
-        return -1;
+        return size;
     }
 }
 
 // TODO: define further classes, if needed (either here or in a separate file).
+
+class ListNode {
+    private final Body b;
+    private ListNode next;
+
+    ListNode(Body b, ListNode next) {
+
+        this.b = b;
+        this.next = next;
+    }
+
+    Body getBody() {
+        return b;
+    }
+
+    ListNode getNext() {
+
+        return next;
+    }
+
+    void setNext(ListNode node) {
+
+        next = node;
+    }
+}

@@ -16,7 +16,6 @@ public class Test {
 
         //test classes BodySinglyLinkedList and BodyAccelerationTreeMap
 
-        /* TODO: remove this line
 
         // create five bodies
         Body sun = new Body(1.989e30, new Vector3(0, 0, 0), new Vector3(0, 0, 0));
@@ -99,7 +98,7 @@ public class Test {
         testValue(map.get(earth).distanceTo(new Vector3(0, 0, 0)), 0);
         testValue(map.get(mercury).distanceTo(mercury.acceleration(sun)), 0);
 
-        // TODO: remove this line */
+
 
     }
 

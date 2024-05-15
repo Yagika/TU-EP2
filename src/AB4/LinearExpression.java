@@ -11,6 +11,8 @@ package AB4;
 public class LinearExpression {
 
     //TODO: declare variables.
+    private IntVarConstTreeMap map;
+    private IntConst constant;
 
     /**
      * Constructs this linear expression from a specified constant.
@@ -19,6 +21,8 @@ public class LinearExpression {
     public LinearExpression(IntConst c) {
 
         //TODO: implement constructor.
+        this.constant = c;
+        this.map = new IntVarConstTreeMap();
     }
 
     /**
@@ -28,6 +32,9 @@ public class LinearExpression {
     public LinearExpression(IntVar v) {
 
         //TODO: implement constructor.
+        this.map = new IntVarConstTreeMap();
+        this.map.put(v, new IntConst(1));
+        this.constant = new IntConst(0);
     }
 
     /**
@@ -40,6 +47,8 @@ public class LinearExpression {
     public LinearExpression(LinearExpression e) {
 
         //TODO: implement constructor.
+        this.map = new IntVarConstTreeMap(e.map);
+        this.constant = e.constant;
     }
 
     /**
@@ -50,7 +59,10 @@ public class LinearExpression {
     public LinearExpression plus(IntVar v) {
 
         //TODO: implement method.
-        return null;
+        LinearExpression result = new LinearExpression(this);
+
+        result.map.put(v, map.containsKey(v) ? map.get(v).plus(new IntConst(1)) : new IntConst(1));
+        return result;
     }
 
     /**
@@ -61,7 +73,20 @@ public class LinearExpression {
     public LinearExpression plus(LinearExpression e) {
 
         //TODO: implement method.
-        return null;
+        LinearExpression result = new LinearExpression(this);
+        IntVarDoublyLinkedList list = e.map.keyList();
+        result.constant = this.constant.plus(e.constant);
+
+        while (list.size() > 0) {
+            IntVar v = list.pollFirst();
+            IntConst coeff = e.map.get(v);
+            if (this.map.containsKey(v)) {
+                result.map.put(v, coeff.plus(this.map.get(v)));
+            } else {
+                result.map.put(v, coeff);
+            }
+        }
+        return result;
     }
 
     /**
@@ -72,7 +97,16 @@ public class LinearExpression {
     public LinearExpression negate() {
 
         //TODO: implement method.
-        return null;
+        IntVarDoublyLinkedList list = map.keyList();
+        LinearExpression result = new LinearExpression(this.constant.negate());
+
+        while (list.size() > 0) {
+
+            IntVar v = list.pollFirst();
+            result.map.put(v, this.map.get(v).negate());
+        }
+
+        return result;
     }
 
     /**
@@ -92,7 +126,21 @@ public class LinearExpression {
     public LinearExpression assignValue(IntVarConstTreeMap varValues) {
 
         //TODO: implement method.
-        return null;
+        IntVarDoublyLinkedList list = map.keyList();
+
+        LinearExpression result = new LinearExpression(this.constant);
+
+        while (list.size() > 0) {
+
+            IntVar v = list.pollFirst();
+            if (varValues.containsKey(v)) {
+                result.constant = result.constant.plus(this.map.get(v).times(varValues.get(v)));
+            } else {
+                result.map.put(v, this.map.get(v));
+            }
+        }
+
+        return result;
     }
 
     /**
@@ -108,7 +156,38 @@ public class LinearExpression {
     public String toString() {
 
         //TODO: implement method.
-        return "";
+        IntVarDoublyLinkedList list = map.keyList();
+        String result = "";
+
+        while(list.size() > 0) {
+            IntVar v = list.pollFirst();
+            IntConst coeff = map.get(v);
+            if (!coeff.isZero()) {
+                String s = coeff.toString();
+                if (coeff.plus(new IntConst(1)).isZero()) {
+                    s = "-";
+                } else {
+                    if(coeff.plus(new IntConst(-1)).isZero()) {
+                        s = "";
+                    }
+                }
+                if (new IntConst(0).lessThan(coeff)) {
+                    result += (result.isEmpty() ? "" : "+") + s;
+                } else {
+                    result += s;
+                }
+                result += v.toString();
+            }
+        }
+        if (!constant.isZero()) {
+            if (new IntConst(0).lessThan(constant)) {
+                result += (result.isEmpty() ? "" : "+") + constant;
+            } else {
+                result += constant;
+            }
+        }
+
+        return result.isEmpty() ? "0" : result;
     }
 }
 

@@ -14,6 +14,8 @@ package AB4;
 public class IntVarConstTreeMap {
 
     //TODO: declare variables.
+    private TreeNode root;
+    private int size;
 
     public IntVarConstTreeMap() {
 
@@ -28,6 +30,10 @@ public class IntVarConstTreeMap {
     public IntVarConstTreeMap(IntVarConstTreeMap map) {
 
         //TODO: implement constructor.
+        if (map.root != null) {
+            this.root = new TreeNode(map.root);
+        }
+        this.size = map.size;
     }
 
     /**
@@ -40,6 +46,13 @@ public class IntVarConstTreeMap {
     public IntVarConstTreeMap(IntVarConstTreeMap map, IntVarDoublyLinkedList toCopy) {
 
         //TODO: implement constructor.
+        for (int i = 0; i < toCopy.size(); i++) {
+            IntVar v = toCopy.pollFirst();
+            if (map.containsKey(v)) {
+                this.put(v, map.get(v));
+            }
+            toCopy.addLast(v);
+        }
     }
 
 
@@ -53,12 +66,22 @@ public class IntVarConstTreeMap {
     public IntConst put(IntVar key, IntConst value) {
 
         //TODO: implement method.
-        return null;
+        if (root == null) {
+            root = new TreeNode(key, value, null, null);
+            size++;
+            return null;
+        }
+
+        boolean[] added = new boolean[]{false};
+
+        IntConst toReturn = root.put(key, value, added);
+        if (added[0]) size++;
+        return toReturn;
     }
 
     /**
-     * Returns the value associated with the specified key, i.e. the vector
-     * associated with the specified body. Returns 'null' if the key is not contained in this map.
+     * Returns the value associated with the specified key, i.e. the constant associated with the
+     * specified variable. Returns 'null' if the key is not contained in this map.
      * @param key a variable != null.
      * @return the value associated with the specified key (or 'null' if the key is not contained in
      * this map).
@@ -66,7 +89,11 @@ public class IntVarConstTreeMap {
     public IntConst get(IntVar key) {
 
         //TODO: implement method.
-        return null;
+        if (root == null) {
+            return null;
+        }
+
+        return root.get(key);
     }
 
     /**
@@ -77,7 +104,11 @@ public class IntVarConstTreeMap {
     public boolean containsKey(IntVar key) {
 
         //TODO: implement method.
-        return false;
+        if (root == null) {
+            return false;
+        }
+
+        return root.containsKey(key);
     }
 
     /**
@@ -87,7 +118,7 @@ public class IntVarConstTreeMap {
     public int size() {
 
         //TODO: implement method.
-        return -1;
+        return size;
     }
 
     /**
@@ -101,8 +132,119 @@ public class IntVarConstTreeMap {
     public IntVarDoublyLinkedList keyList() {
 
         //TODO: implement method.
-        return null;
+        IntVarDoublyLinkedList result = new IntVarDoublyLinkedList();
+
+        if (root == null) {
+            return result;
+        }
+
+        root.addToList(result);
+        return result;
     }
 }
 
 // TODO: define further classes, if needed (either here or in a separate file).
+
+class TreeNode {
+    private TreeNode left;
+    private TreeNode right;
+    private IntVar key;
+    private IntConst value;
+
+    public TreeNode(IntVar key, IntConst value, TreeNode left, TreeNode right) {
+        this.key = key;
+        this.left = left;
+        this.right = right;
+        this.value = value;
+    }
+
+    /**
+     * Copy-Constructor: initializes a copy of 'node' recursively.
+     * @param node
+     */
+    public TreeNode(TreeNode node) {
+        this.key = node.key;
+
+        if (node.left != null) this.left = new TreeNode(node.left);
+        if (node.right != null) this.right = new TreeNode(node.right);
+
+        this.value = node.value;
+    }
+
+    //Precondition: added[0] == false
+    IntConst put(IntVar p, IntConst value, boolean[] added) {
+
+        if (this.key == p) {
+            IntConst toReturn = this.value;
+            this.value = value;
+            return toReturn;
+        }
+
+        if (key.getName().compareTo(p.getName()) < 0) {
+            if (left == null) {
+                left = new TreeNode(p, value,null, null);
+                added[0] = true;
+                return null;
+            } else {
+                return left.put(p, value, added);
+            }
+        } else { // key.compareTo(p) >= 0
+            if (right == null) {
+                right = new TreeNode(p, value,null, null);
+                added[0] = true;
+                return null;
+            } else {
+                return right.put(p, value, added);
+            }
+        }
+    }
+
+    public IntConst get(IntVar p) {
+        if (key == p) {
+            return value;
+        }
+
+        if (key.getName().compareTo(p.getName()) < 0) {
+            if (left == null) {
+                return null;
+            }
+            return left.get(p);
+        } else {
+            if (right == null) {
+                return null;
+            }
+            return right.get(p);
+        }
+    }
+
+    public boolean containsKey(IntVar key) {
+        if (this.key == key) {
+            return true;
+        }
+        if (this.key.getName().compareTo(key.getName()) < 0) {
+            return left != null && left.containsKey(key);
+        } else {
+            return right != null && right.containsKey(key);
+        }
+    }
+
+    public void addToList(IntVarDoublyLinkedList list) {
+
+        if (left != null) {
+            left.addToList(list);
+        }
+        list.addFirst(this.key);
+        if (right != null) {
+            right.addToList(list);
+        }
+    }
+
+    public String toString() {
+        String result;
+        result = right == null ? "" : right.toString();
+        result += (result.isEmpty() ? "" : ", ") + this.key+"="+ value;
+        result += left == null ? "" :  ", " + left.toString();
+        return result;
+    }
+
+}

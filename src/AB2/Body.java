@@ -30,7 +30,6 @@ public class Body {
      * @return the distance between the centers of mass of this body and the specified body 'b'.
      */
     public double distanceTo(AB2.Body b) {
-
         return this.massCenter.distanceTo(b.massCenter);
     }
 
@@ -84,11 +83,11 @@ public class Body {
      * @param b the body with which 'this' is merged, b != null.
      * @return the body being formed by the collision.
      */
-    public AB1.Body merge(AB2.Body b) {
-        double new_mass = this.mass + b.mass;
-        Vector3 new_mass_center = this.massCenter.times(this.mass).plus(b.massCenter.times(b.mass)).times(1.0 / new_mass);
-        Vector3 new_movement = this.currentMovement.times(this.mass).plus(b.currentMovement.times(b.mass)).times(1.0 / new_mass);
-        return new AB1.Body(new_mass, new_mass_center, new_movement);
+    public Body merge(Body b) {
+        double newMass = this.mass + b.mass;
+        Vector3 newMassCenter = this.massCenter.times(this.mass).plus(b.massCenter.times(b.mass)).times(1 / newMass);
+        Vector3 newMovement = this.currentMovement.times(this.mass).plus(b.currentMovement.times(b.mass)).times(1 / newMass);
+        return new Body(newMass, newMassCenter, newMovement);
     }
 
     /**

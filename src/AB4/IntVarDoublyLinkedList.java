@@ -11,6 +11,8 @@ package AB4;
 public class IntVarDoublyLinkedList {
 
     //TODO: declare variables.
+    private MyDoubleListNode head;
+    private MyDoubleListNode tail;
 
     /**
      * Initializes 'this' as an empty list.
@@ -27,6 +29,15 @@ public class IntVarDoublyLinkedList {
     public void addFirst(IntVar v) {
 
         //TODO: implement method.
+        if (head == null) {
+            head = tail = new MyDoubleListNode(v, null, null);
+        } else if (head == tail) {
+            head = new MyDoubleListNode(v, null, head);
+            tail.setPrev(head);
+        } else {
+            head = new MyDoubleListNode(v, null, head);
+            head.getNext().setPrev(head);
+        }
     }
 
     /**
@@ -36,6 +47,16 @@ public class IntVarDoublyLinkedList {
     public void addLast(IntVar v) {
 
         //TODO: implement method.
+        if (head == null) {
+            head = tail = new MyDoubleListNode(v, null, null);
+        } else if (head == tail) {
+            tail = new MyDoubleListNode(v, tail, null);
+            head.setNext(tail);
+        }
+        else {
+            tail = new MyDoubleListNode(v, tail, null);
+            tail.getPrev().setNext(tail);
+        }
     }
 
     /**
@@ -45,7 +66,10 @@ public class IntVarDoublyLinkedList {
     public IntVar getLast() {
 
         //TODO: implement method.
-        return null;
+        if (head == null) {
+            return null;
+        }
+        return tail.getRaster();
     }
 
     /**
@@ -55,7 +79,10 @@ public class IntVarDoublyLinkedList {
     public IntVar getFirst() {
 
         //TODO: implement method.
-        return null;
+        if (head == null) {
+            return null;
+        }
+        return head.getRaster();
     }
 
     /**
@@ -68,7 +95,17 @@ public class IntVarDoublyLinkedList {
     public IntVar pollFirst() {
 
         //TODO: implement method.
-        return null;
+        if (head == null) {
+            return null;
+        }
+        IntVar toReturnRaster = head.getRaster();
+        head = head.getNext();
+        if (head == null) {
+            tail = null;
+        } else {
+            head.setPrev(null);
+        }
+        return toReturnRaster;
     }
 
     /**
@@ -79,7 +116,17 @@ public class IntVarDoublyLinkedList {
     public IntVar pollLast() {
 
         //TODO: implement method.
-        return null;
+        if (head == null) {
+            return null;
+        }
+        IntVar toReturnRaster = tail.getRaster();
+        tail = tail.getPrev();
+        if (tail == null) {
+            head = null;
+        } else {
+            tail.setNext(null);
+        }
+        return toReturnRaster;
     }
 
 
@@ -93,6 +140,13 @@ public class IntVarDoublyLinkedList {
     public void add(int i, IntVar v) {
 
         //TODO: implement method.
+        if (i == 0) {
+            addFirst(v);
+        } else if (i == size()) {
+            addLast(v);
+        } else {
+            head.add(v, i);
+        }
     }
 
     /**
@@ -104,7 +158,7 @@ public class IntVarDoublyLinkedList {
     public IntVar get(int i) {
 
         //TODO: implement method.
-        return null;
+        return head.get(i);
     }
 
     /**
@@ -116,7 +170,7 @@ public class IntVarDoublyLinkedList {
     public IntVar set(int i, IntVar v) {
 
         //TODO: implement method.
-        return null;
+        return head.set(i, v);
     }
 
     /**
@@ -129,7 +183,13 @@ public class IntVarDoublyLinkedList {
     public IntVar remove(int i) {
 
         //TODO: implement method.
-        return null;
+        if (head == tail || i == size() - 1) {
+            return pollLast(); // Assuming preconditions hold
+        }
+        if (i == 0) {
+            return pollFirst();
+        }
+        return head.remove(i);
     }
 
     /**
@@ -143,7 +203,10 @@ public class IntVarDoublyLinkedList {
     public int lastIndexOf(IntVar v) {
 
         //TODO: implement method.
-        return -2;
+        if (tail == null) {
+            return -1;
+        }
+        return tail.lastIndexOf(v, size() - 1);
     }
 
     /**
@@ -153,8 +216,103 @@ public class IntVarDoublyLinkedList {
     public int size() {
 
         //TODO: implement method.
-        return -1;
+        if (head == null) {
+            return 0;
+        }
+        return head.size();
     }
 }
 
 // TODO: define further classes, if needed (either here or in a separate file).
+
+class MyDoubleListNode {
+    private IntVar b;
+    private MyDoubleListNode next;
+    private MyDoubleListNode prev;
+
+    MyDoubleListNode(IntVar b, MyDoubleListNode prev, MyDoubleListNode next) {
+        this.b = b;
+        this.prev = prev;
+        this.next = next;
+    }
+
+    IntVar getRaster() {
+        return b;
+    }
+
+    //Precondition: inner index
+    void add(IntVar b, int i) {
+        if (i == 0) {
+            //insert
+            MyDoubleListNode newNode = new MyDoubleListNode(b, prev, this);
+            prev.next = newNode;
+            this.prev = newNode;
+        } else {
+            next.add(b, i - 1);
+        }
+    }
+
+    // Precondition: 'i' is a valid index.
+    IntVar get(int i) {
+        if (i == 0) {
+            return b;
+        } else {
+            return next.get(i - 1);
+        }
+    }
+
+    // Precondition: 'i' is a valid index.
+    IntVar set(int i, IntVar var) {
+        if (i == 0) {
+            IntVar result = b;
+            this.b = var;
+            return result;
+        } else {
+            return next.set(i - 1, var);
+        }
+    }
+
+    IntVar remove(int i) {
+        if (i == 0) {
+            this.prev.next = this.next;
+            this.next.prev = this.prev;
+            return this.b;
+        } else {
+            return next.remove(i - 1);
+        }
+    }
+
+    int lastIndexOf(IntVar var, int i) {
+        if (var == this.b) {
+            return i;
+        }
+        if (prev == null) {
+            return -1;
+        }
+        return prev.lastIndexOf(var, i - 1);
+    }
+
+    int size() {
+        if (next == null) {
+            return 1;
+        }
+        return 1 + next.size();
+    }
+
+    public MyDoubleListNode getNext() {
+        return next;
+    }
+
+    public MyDoubleListNode getPrev() {
+        return prev;
+    }
+
+    void setNext(MyDoubleListNode node) {
+        next = node;
+    }
+
+    void setPrev(MyDoubleListNode node) {
+        prev = node;
+    }
+
+}

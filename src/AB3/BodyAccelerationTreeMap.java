@@ -16,19 +16,8 @@ import AB2.Body;
 public class BodyAccelerationTreeMap {
 
     //TODO: declare variables.
-    private Node root;
-    private static class Node {
-        Body key;
-        Vector3 value;
-        Node left, right;
+    private TreeNode root;
 
-        Node(Body key, Vector3 value) {
-            this.key = key;
-            this.value = value;
-            left = null;
-            right = null;
-        }
-    }
 
     /**
      * Adds a new key-value association to this map. If the key already exists in this map,
@@ -40,37 +29,11 @@ public class BodyAccelerationTreeMap {
     public Vector3 put(Body key, Vector3 value) {
 
         // TODO: implement method.
-        if (key == null) {
-            throw new IllegalArgumentException("Fehler");
-        }
-
         if (root == null) {
-            root = new Node(key, value);
+            root = new TreeNode(key, value, null, null);
             return null;
         }
-        Node parent = null;
-        Node current = root;
-        while (current != null) {
-            if (key.getMass()==current.key.getMass()) {
-                Vector3 oldValue = current.value;
-                current.value = value;
-                return oldValue;
-            } else if (key.getMass()<current.key.getMass()) {
-                parent = current;
-                current = current.left;
-            } else {
-                parent = current;
-                current = current.right;
-            }
-        }
-        // Insert the new node based on the comparison result
-        Node newNode = new Node(key, value);
-        if (key.getMass()<current.key.getMass()) {
-            parent.left = newNode;
-        } else {
-            parent.right = newNode;
-        }
-        return null;
+        return root.add(key, value);
     }
 
 
@@ -84,21 +47,10 @@ public class BodyAccelerationTreeMap {
     public Vector3 get(Body key) {
 
         // TODO: implement method.
-        if (key == null) {
-            throw new IllegalArgumentException("Fehler");
+        if (!containsKey(key)) {
+            return null;
         }
-
-        Node current = root;
-        while (current != null) {
-            if (key.getMass() == current.key.getMass()) {
-                return current.value;
-            } else if (key.getMass() < current.key.getMass()) {
-                current = current.left;
-            } else {
-                current = current.right;
-            }
-        }
-        return null;
+        return root.get(key);
     }
 
     /**
@@ -109,21 +61,10 @@ public class BodyAccelerationTreeMap {
     public boolean containsKey(Body key) {
 
         // TODO: implement method.
-        if (key == null) {
-            throw new IllegalArgumentException("Fehler");
+        if (root == null) {
+            return false;
         }
-
-        Node current = root;
-        while (current != null) {
-            if (key.getMass() == current.key.getMass()) {
-                return true;
-            } else if (key.getMass() < current.key.getMass()) {
-                current = current.left;
-            } else {
-                current = current.right;
-            }
-        }
-        return false;
+        return root.containsKey(key);
     }
 
     /**
@@ -133,28 +74,103 @@ public class BodyAccelerationTreeMap {
     public String toString() {
 
         // TODO: implement method.
-        StringBuilder sb = new StringBuilder();
-        toStringHelper(root, sb);
-        return sb.toString();
-    }
-    private void toStringHelper(Node node, StringBuilder sb) {
-        if (node != null) {
-            toStringHelper(node.right, sb);
-            sb.append("(").append(node.key).append(", ").append(node.value).append(")\n");
-            toStringHelper(node.left, sb);
+        if (root == null) {
+            return "";
         }
+        return root.toString();
     }
-    public AB3.BodyQueue getMaxAndMin(Body key){
-        for (int i = 0; i < ; i++) {
-            if (){
+//    public AB3.BodyQueue getMaxAndMin(Body key){
+//        for (int i = 0; i < ; i++) {
+//            if (){
+//
+//            }
+//        }
+//        if (this == null) {
+//            return AB3.BodyQueue[];
+//        }else {
+//            return new AB3.BodyQueue[];
+//        }
+//    }
+}
+// TODO: define further classes, if needed (either here or in a separate file).
+class TreeNode {
+    private TreeNode left;
+    private TreeNode right;
+    private Body key;
+    private Vector3 value;
 
+    TreeNode(Body key, Vector3 value, TreeNode left, TreeNode right) {
+        this.key = key;
+        this.value = value;
+        this.left = left;
+        this.right = right;
+    }
+
+    Vector3 add(Body key, Vector3 value) {
+        if (key == this.key) {
+            Vector3 oldValue = this.value;
+            this.value = value;
+            return oldValue;
+        }
+
+        if (key.getMass() < this.key.getMass()) {
+            if (left == null) {
+                left = new TreeNode(key, value, null, null);
+                return null;
+            } else {
+                return left.add(key, value);
+            }
+        } else {
+            if (right == null) {
+                right = new TreeNode(key, value, null, null);
+                return null;
+            } else {
+                return right.add(key, value);
             }
         }
-        if (this == null) {
-            return AB3.BodyQueue[];
-        }else {
-            return new AB3.BodyQueue[];
+    }
+
+    Vector3 get(Body key) {
+        if (key == this.key) {
+            return value;
+        }
+
+        if (key.getMass() < this.key.getMass()) {
+            if (left == null) {
+                return null;
+            }
+            return left.get(key);
+        } else {
+            if (right == null) {
+                return null;
+            }
+            return right.get(key);
+        }
+
+    }
+
+    public String toString() {
+        String result;
+        result = right == null ? "" : right.toString();
+        result += "(" + this.key + "=" + this.value + ")\n";
+        result += left == null ? "" : left.toString();
+        return result;
+    }
+
+    boolean containsKey(Body key) {
+        if (key == this.key) {
+            return true;
+        }
+        if (key.getMass() < this.key.getMass()) {
+            if (left == null) {
+                return false;
+            }
+            return left.containsKey(key);
+        } else {
+            if (right == null) {
+                return false;
+            }
+            return right.containsKey(key);
         }
     }
 }
-// TODO: define further classes, if needed (either here or in a separate file).
