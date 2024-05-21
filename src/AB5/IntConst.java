@@ -6,9 +6,10 @@ import java.util.Objects;
  * This class represents a constant integer value. Two 'IntConst' objects are equal
  * if they represent the same value.
  */
-public class IntConst implements LinearExpression {
+public class IntConst implements LinearExpression, IntVarTerm {
 
     private final int value;
+
 
     /**
      * Initializes this constant with the specified value.
@@ -18,6 +19,10 @@ public class IntConst implements LinearExpression {
 
         this.value = value;
     }
+    public int getValue() {
+        return value;
+    }
+
 
     @Override
     /**
@@ -31,10 +36,20 @@ public class IntConst implements LinearExpression {
     }
 
     @Override
+    public IntVar getVar() {
+        return null;
+    }
+
+    @Override
+    public IntConst getCoeff() {
+        return null;
+    }
+
+    @Override
     public LinearExpression plus(IntVarTerm t) {
 
         //TODO: implement method.
-        return null; // return new SumOfTerms(t, this);
+        return new SumOfTerms(t, this); // return new SumOfTerms(t, this);
     }
 
     @Override
@@ -80,7 +95,7 @@ public class IntConst implements LinearExpression {
      * following holds: c.plus(c.negate()).isZero() == true.
      * @return the negative of 'this'.
      */
-    public IntConst negate() {
+    public IntVarTerm negate() {
 
         return new IntConst(-value);
     }
@@ -89,8 +104,8 @@ public class IntConst implements LinearExpression {
      * Returns 'true' only if 'this' represents the value 0.
      * @return 'true' if 'this' represents the value 0, otherwise 'false'.
      */
-    public boolean isZero() {
 
+    public boolean isZero() {
         return value == 0;
     }
 

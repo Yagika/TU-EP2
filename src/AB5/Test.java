@@ -1,6 +1,7 @@
 package AB5;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * A class used for testing.
@@ -13,7 +14,6 @@ public class Test {
      */
     public static void main(String[] args) {
 
-        /* TODO: uncomment block.
         System.out.println("Test1:");
         IntVar x = new IntVar("x");
         IntVar y = new IntVar("y");
@@ -50,7 +50,7 @@ public class Test {
 
         System.out.println("\nTest4:");
 
-        IntVarIterator iter = x.plus(y).plus(five).iterator();
+        Iterator<IntVar> iter = x.plus(y).plus(five).iterator();
         IntVar e1, e2;
         testIdentity(iter.hasNext(), true);
         e1 = iter.next();
@@ -94,7 +94,7 @@ public class Test {
         System.out.println("\nTest6:");
         testEquals(e.assignValue(values).toString().replaceAll("\\s",""), "20");
 
-        // TODO: end of block to uncomment */
+
 
     }
 

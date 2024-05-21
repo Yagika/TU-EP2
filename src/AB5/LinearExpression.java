@@ -30,6 +30,8 @@ public interface LinearExpression extends IntVarIterable {
      */
     LinearExpression plus(IntConst c);
 
+    boolean isZero();
+
     /**
      * The 'plus' method specifically for terms with variables
      * (see specification of 'plus(LinearExpression)').
