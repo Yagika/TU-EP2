@@ -14,19 +14,14 @@ import java.util.Objects;
 public class IntVar implements IntVarTerm //TODO: uncomment clause.
 {
     private final String name;
-    private int value;
 
     /**
      * Initializes this variable with a specified name.
      * @param name, the name != null.
      */
-    public IntVar(String name,int initialValue) {
+    public IntVar(String name) {
 
         this.name = name;
-        this.value = initialValue;
-    }
-    public int getValue() {
-        return value;
     }
 
     /**
@@ -53,6 +48,10 @@ public class IntVar implements IntVarTerm //TODO: uncomment clause.
     @Override
     public AB6.LinearExpression plus(AB6.LinearExpression e) {
         return e.plus(this);
+    }
+    @Override
+    public LinearExpression plus(IntConst c) {
+        return new SumOfTerms(this, c);
     }
 
     @Override

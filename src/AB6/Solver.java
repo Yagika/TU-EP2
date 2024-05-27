@@ -88,8 +88,8 @@ public class Solver {
 
          The values of the following variables have to be found: S, E, N, D, M, O, R, Y,
          subject to constraints:
-         1.) All values must be different from each other,
-         2.) S != 0, M != 0 (no leading zeros allowed).
+         1. All values must be different from each other,
+         2. S != 0, M != 0 (no leading zeros allowed).
          */
 
         IntVar S = new IntVar("S");

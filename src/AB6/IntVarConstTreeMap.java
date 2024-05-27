@@ -73,16 +73,63 @@ public class IntVarConstTreeMap implements IntVarConstMap //TODO: uncomment clau
         return size;
     }
 
-    public AB6.IntConst remove(IntVar key) {
-        if (root == null || !containsKey(key)) {
-            return null;
-        }
-        size--;
-        IntConst removedValue = root.remove(key);
-        if (removedValue != null) {
+    @Override
+    public IntConst remove(IntVar key) {
+        if (key != null) {
+            TreeNode parent = null;
+            TreeNode current = root;
+            while (current != null && !current.getKey().equals(key)) {
+                parent = current;
+                int cmp = key.getName().compareTo(current.getKey().getName());
+                if (cmp < 0) {
+                    current = current.getLeft();
+                } else {
+                    current = current.getRight();
+                }
+            }
+
+            if (current == null) {
+                return null;
+            }
+
+            IntConst oldValue = current.getValue();
+
+            if (current.getLeft() == null && current.getRight() == null) {
+                if (current == root) {
+                    root = null;
+                } else if (current.equals(parent.getLeft())) {
+                    parent.setLeft(null);
+                } else {
+                    parent.setRight(null);
+                }
+            } else if (current.getLeft() != null && current.getRight() != null) {
+                TreeNode successorParent = current;
+                TreeNode successor = current.getRight();
+                while (successor.getLeft() != null) {
+                    successorParent = successor;
+                    successor = successor.getLeft();
+                }
+                current.setKey(successor.getKey());
+                current.setValue(successor.getValue());
+                if (successorParent.getLeft() == successor) {
+                    successorParent.setLeft(successor.getRight());
+                } else {
+                    successorParent.setRight(successor.getRight());
+                }
+            } else {
+                TreeNode child = (current.getLeft() != null) ? current.getLeft() : current.getRight();
+                if (current == root) {
+                    root = child;
+                } else if (current == parent.getLeft()) {
+                    parent.setLeft(child);
+                } else {
+                    parent.setRight(child);
+                }
+            }
             size--;
+            return oldValue;
         }
-        return removedValue;
+        return null;
     }
 
 
@@ -191,39 +238,36 @@ class TreeNode {
         return result;
     }
 
-    public TreeNode remove(IntVar k) {
-        if (k.getValue() < this.key.getValue()) {
-            if (this.left != null) {
-                this.left = this.left.remove(k);
-            }
-            return this;
-        } else if (k.getValue() > this.key.getValue()) {
-            if (this.right != null) {
-                this.right = this.right.remove(k);
-            }
-            return this;
-        } else {
-            if (this.left == null) {
-                return this.right;
-            } else if (this.right == null) {
-                return this.left;
-            } else {
-                TreeNode minRight = this.right.findMin();
-                this.key = minRight.key;
-                this.value = minRight.value; // Copy value from minRight
-                this.right = this.right.remove(minRight.key);
-                return this;
-            }
-        }
+    public IntVar getKey() {
+        return key;
     }
 
-    private TreeNode findMin() {
-        TreeNode current = this;
-        while (current.left != null) {
-            current = current.left;
-        }
-        return current;
+    public void setKey(IntVar key) {
+        this.key = key;
     }
 
+    public IntConst getValue() {
+        return value;
+    }
+
+    public void setValue(IntConst value) {
+        this.value = value;
+    }
+
+    public TreeNode getLeft() {
+        return left;
+    }
+
+    public void setLeft(TreeNode left) {
+        this.left = left;
+    }
+
+    public TreeNode getRight() {
+        return right;
+    }
+
+    public void setRight(TreeNode right) {
+        this.right = right;
+    }
 
 }
