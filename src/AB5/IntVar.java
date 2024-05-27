@@ -1,8 +1,7 @@
 package AB5;
 
-import java.util.Iterator;
-import java.util.Collections;
-import java.util.List;
+import java.util.Objects;
+
 /**
  * This class represents a free variable which can take on integer values. Each object of
  * this class represents a different variable (regardless of the name). This means that
@@ -48,66 +47,70 @@ public class IntVar implements IntVarTerm //TODO: uncomment clause.
 
     //TODO: define missing parts of this class.
     @Override
+    public LinearExpression plus(LinearExpression e) {
+        return e.plus(this);
+    }
+
+    @Override
+    public LinearExpression plus(IntVarTerm t) {
+        if (this.equals(t.getVar())) {
+            return new ConstVarProduct(t.getCoeff().plus(ONE), this);
+        }
+        return new SumOfTerms(this, t);
+    }
+
+    @Override
+    public LinearExpression negate() {
+        return new ConstVarProduct(ONE.negate(), this);
+    }
+
+    @Override
+    public LinearExpression times(IntConst c) {
+        if (c.isZero()) {
+            return ZERO;
+        }
+        if (c.plus(ONE.negate()).isZero()) {
+            return this.negate();
+        }
+        if (c.plus(ONE).isZero()) {
+            return this;
+        }
+        return new ConstVarProduct(c, this);
+    }
+
+    @Override
+    public LinearExpression assignValue(IntVarConstMap varValues) {
+        IntConst value = varValues.get(this);
+        if (value != null) {
+            return value;
+        }
+        return this;
+    }
+
+    @Override
     public IntVar getVar() {
         return this;
     }
 
     @Override
-    public IntConst getCoeff() {
-        return new IntConst(1);
+    public IntConst getCoeff() { //coeff immer 1
+        return ONE;
     }
 
     @Override
-    public LinearExpression times(IntConst c) {
-        return new ConstVarProduct(c, this);
+    public IntVarIterator iterator() {
+
+        return new SingleIntVarIterator(this);
     }
 
     @Override
-
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        IntVar intVar = (IntVar) obj;
-        return name.equals(intVar.name);
+    public boolean equals(Object o) {
+        return this == o;
     }
 
     @Override
-
     public int hashCode() {
-        return name.hashCode();
-
-    }
-
-    @Override
-
-    public LinearExpression assignValue(IntVarConstMap map) {
-        if (map.containsKey(this)) {
-            return map.get(this);
-        } else {
-            return this;
-        }
-    }
-
-    @Override
-    public LinearExpression plus(LinearExpression e) {
-        if (e instanceof IntVar) {
-            return new SumOfTerms(this, (IntVar) e);
-        }
-        return new SumOfTerms(this, new IntConst(0));
-    }
-
-    public boolean isZero() {
-        return getCoeff().isZero();
-    }
-
-    @Override
-    public IntVarTerm negate() {
-        return new ConstVarProduct(new IntConst(-1), this);
-    }
-    @Override
-    public Iterator<IntVar> iterator() {
-        List<IntVar> singletonList = Collections.singletonList(this);
-        return singletonList.iterator();
+        return Objects.hash(name);
     }
 }
 

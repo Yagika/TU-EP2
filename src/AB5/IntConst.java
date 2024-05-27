@@ -6,11 +6,8 @@ import java.util.Objects;
  * This class represents a constant integer value. Two 'IntConst' objects are equal
  * if they represent the same value.
  */
-public class IntConst implements LinearExpression, IntVarTerm {
-
+public class IntConst implements LinearExpression {
     private final int value;
-
-
     /**
      * Initializes this constant with the specified value.
      * @param value, value != 0 && value != 1 && value != -1.
@@ -19,10 +16,6 @@ public class IntConst implements LinearExpression, IntVarTerm {
 
         this.value = value;
     }
-    public int getValue() {
-        return value;
-    }
-
 
     @Override
     /**
@@ -34,22 +27,14 @@ public class IntConst implements LinearExpression, IntVarTerm {
 
         return new IntConst(c.value + this.value);
     }
-
-    @Override
-    public IntVar getVar() {
-        return null;
-    }
-
-    @Override
-    public IntConst getCoeff() {
-        return null;
-    }
-
     @Override
     public LinearExpression plus(IntVarTerm t) {
 
         //TODO: implement method.
-        return new SumOfTerms(t, this); // return new SumOfTerms(t, this);
+        if (this.isZero()) {
+            return t;
+        }
+        return t.plus(this);
     }
 
     @Override
@@ -95,7 +80,7 @@ public class IntConst implements LinearExpression, IntVarTerm {
      * following holds: c.plus(c.negate()).isZero() == true.
      * @return the negative of 'this'.
      */
-    public IntVarTerm negate() {
+    public IntConst negate() {
 
         return new IntConst(-value);
     }
@@ -104,10 +89,10 @@ public class IntConst implements LinearExpression, IntVarTerm {
      * Returns 'true' only if 'this' represents the value 0.
      * @return 'true' if 'this' represents the value 0, otherwise 'false'.
      */
-
     public boolean isZero() {
         return value == 0;
     }
+
 
     /**
      * Returns 'true' if and only if 'this' is less than 'c'.

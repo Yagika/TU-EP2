@@ -27,7 +27,7 @@ public interface IntVarConstMap {
      * @param key   the key of the mapping != null.
      * @param value the constant to be associated with the key (can also be 'null').
      */
-    void put(IntVar key, IntConst value);
+    IntConst put(IntVar key, IntConst value);
 
     /**
      * Removes the mapping for a key from this map if it is present. More formally, if this map
@@ -63,5 +63,5 @@ public interface IntVarConstMap {
      *
      * @return a new 'IntVarQueue' object containing all the keys of this map.
      */
-    Queue<IntVar> keyQueue();
+    IntVarQueue keyQueue();
 }

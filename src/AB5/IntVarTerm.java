@@ -7,21 +7,22 @@ package AB5;
  */
 public interface IntVarTerm extends LinearExpression {
     IntVar getVar();
+
     IntConst getCoeff();
 
     default LinearExpression plus(IntVarTerm t) {
 
-            if (t.getVar().equals(this.getVar())) {
-                IntConst c = t.getCoeff().plus(this.getCoeff());
-                if (c.isZero()) {
-                    return ZERO;
-                }
-                if (c.plus(ONE.negate()).isZero()) {
-                    return this.getVar();
-                }
-                return new ConstVarProduct(c, this.getVar());
+        if (t.getVar().equals(this.getVar())) {
+            IntConst c = t.getCoeff().plus(this.getCoeff());
+            if (c.isZero()) {
+                return ZERO;
             }
-            return new SumOfTerms(this, t);
+            if (c.plus(ONE.negate()).isZero()) {
+                return this.getVar();
+            }
+            return new ConstVarProduct(c, this.getVar());
+        }
+        return new SumOfTerms(this, t);
     }
 
     default LinearExpression plus(IntConst c) {
