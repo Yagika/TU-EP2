@@ -98,6 +98,4 @@ public class ConstVarProduct implements IntVarTerm // TODO: uncomment clause.
     }
 }
 
-
-
 // TODO: define further classes, if needed, either here or in a separate file.

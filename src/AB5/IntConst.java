@@ -29,7 +29,6 @@ public class IntConst implements LinearExpression {
     }
     @Override
     public LinearExpression plus(IntVarTerm t) {
-
         //TODO: implement method.
         if (this.isZero()) {
             return t;

@@ -94,8 +94,6 @@ public class Test {
         System.out.println("\nTest6:");
         testEquals(e.assignValue(values).toString().replaceAll("\\s",""), "20");
 
-
-
     }
 
     /**

@@ -40,12 +40,9 @@ public class Solver {
         for(IntVar v: varSet) {
             varArray[i++] = v;
         }
-        /* TODO: uncomment this block
         IntVarConstMap assignments = new IntVarConstTreeMap();
         solve(varArray, 0, assignments);
         return assignments;
-        // TODO: end of block to uncomment. */
-        return null;
     }
 
     /**
@@ -108,7 +105,6 @@ public class Solver {
         IntConst hundred = new IntConst(100);
         IntConst ten = new IntConst(10);
 
-        /* TODO: uncomment this block
         LinearExpression sendMore =
                 S.times(thousand).plus(E.times(hundred)).plus(N.times(ten)).plus(D);
         sendMore = sendMore.plus(M.times(thousand).plus(O.times(hundred)).plus(R.times(ten)).plus(E));
@@ -129,6 +125,5 @@ public class Solver {
         // Print the solution once again
         System.out.println(solution);
 
-        // TODO: end of block to uncomment. */
     }
 }

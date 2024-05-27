@@ -6,10 +6,12 @@ package AB6;
 //
 // TODO: define further classes and methods, if needed.
 //
-public class AllDifferent // implements Condition //TODO: uncomment clause.
+public class AllDifferent implements Condition //TODO: uncomment clause.
 {
 
     //TODO: define missing parts of this class.
+    private IntVarSet varSet;
+
 
     /**
      * Initializes this 'AllDifferent' constraint object.
@@ -20,11 +22,18 @@ public class AllDifferent // implements Condition //TODO: uncomment clause.
     public AllDifferent(IntVarSet set) {
 
         //TODO: implement constructor.
+        this.varSet = set;
     }
+
+    @Override
+    public IntVarSet getVarSet() {
+        return varSet;
+    }
+
 
     /**
      * Evaluates the condition based on current assignments.
-     *
+     * <p>
      * This method checks if the values assigned to the variables in the intersection
      * of this condition's variable set and the keys of the provided map are all unique.
      * Only variables that are both in the internal set and the key set of 'assignments'
@@ -36,9 +45,21 @@ public class AllDifferent // implements Condition //TODO: uncomment clause.
      *                    may or may not fully cover all variables in the problem.
      * @return true, if all considered variables have unique values, false otherwise.
      */
-    boolean getValue(IntVarConstMap assignments) {
+    @Override
+    public boolean getValue(IntVarConstMap assignments) {
 
         //TODO: implement method.
-        return false;
+        // Überprüfen, ob die zugewiesenen Werte eindeutig sind
+        for (IntVar var : varSet) {
+            IntConst value = assignments.get(var);
+            if (value != null) {
+                for (IntVar otherVar : varSet) {
+                    if (var != otherVar && value.equals(assignments.get(otherVar))) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 }

@@ -6,9 +6,10 @@ package AB6;
 //
 // TODO: define further classes and methods, if needed.
 //
-public class NOT // implements Condition //TODO: uncomment clause.
+public class NOT implements Condition //TODO: uncomment clause.
 {
     //TODO: define missing parts of this class.
+    private Condition condition;
 
     /**
      * Initializes 'this' as the negation 'NOT c'.
@@ -17,5 +18,15 @@ public class NOT // implements Condition //TODO: uncomment clause.
     public NOT(Condition c) {
 
         //TODO: implement constructor.
+        this.condition = c;
+    }
+    @Override
+    public IntVarSet getVarSet() {
+        return condition.getVarSet();
+    }
+
+    @Override
+    public boolean getValue(IntVarConstMap assignments) {
+        return !condition.getValue(assignments);
     }
 }

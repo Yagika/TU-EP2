@@ -9,36 +9,40 @@ public interface Condition {
 
     /**
      * Returns a new condition representing the boolean combination 'this' AND 'c'.
+     *
      * @param c the second condition, c != null.
      * @return a new condition representing the boolean combination 'this' AND 'c'.
      */
     default Condition and(Condition c) {
 
-        return null; //return new AND(this, c); //TODO: exchange this line.
+        return new AND(this, c); //TODO: exchange this line.
     }
 
     /**
      * Returns a new condition representing the boolean combination 'this' OR 'c'.
+     *
      * @param c the second condition, c != null.
      * @return a new condition representing the boolean combination 'this' OR 'c'.
      */
     default Condition or(Condition c) {
 
-        return null; // return new OR(this, c); //TODO: exchange this line.
+        return new OR(this, c); //TODO: exchange this line.
     }
 
     /**
      * Returns a new condition representing the boolean operation NOT 'this'.
+     *
      * @return a new condition representing the boolean operation NOT 'this'.
      */
     default Condition not() {
 
-        return null; // return new NOT(this); //TODO: exchange this line.
+        return new NOT(this); //TODO: exchange this line.
     }
 
     /**
      * Returns a new set of all variables of this condition. Later changes of 'this' will
      * not affect the set and vice versa.
+     *
      * @return a new set of all variables of this condition.
      */
     IntVarSet getVarSet();
@@ -46,6 +50,7 @@ public interface Condition {
     /**
      * Returns 'true' if this condition is satisfied for the specified variable
      * assignments, otherwise 'false'.
+     *
      * @param assignments the values for each variable occurring in this condition.
      * @return 'true' if this condition is satisfied, otherwise 'false'.
      */

@@ -13,7 +13,6 @@ public class Test {
      */
     public static void main(String[] args) {
 
-        /* TODO: uncomment block.
         System.out.println("Test1:");
         IntVar x = new IntVar("x");
         IntVar y = new IntVar("y");
@@ -93,8 +92,6 @@ public class Test {
 
         System.out.println("\nTest6:");
         testEquals(e.assignValue(values).toString().replaceAll("\\s",""), "20");
-
-        // TODO: end of block to uncomment */
 
         // TODO: add suitable tests for classes implementing 'Condition'.
 

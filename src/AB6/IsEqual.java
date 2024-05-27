@@ -8,9 +8,12 @@ package AB6;
 //
 // TODO: define further classes and methods, if needed.
 //
-public class IsEqual //implements Condition //TODO: uncomment clause.
+public class IsEqual implements Condition //TODO: uncomment clause.
 {
     //TODO: define missing parts of this class.
+    private LinearExpression expression1;
+    private LinearExpression expression2;
+
 
     /**
      * Initializes 'this' with two linear expressions.
@@ -20,16 +23,29 @@ public class IsEqual //implements Condition //TODO: uncomment clause.
     public IsEqual(LinearExpression e1, LinearExpression e2) {
 
         //TODO: implement constructor.
+        this.expression1 = e1;
+        this.expression2 = e2;
     }
 
     /**
      * Returns e1.assignValue(assignments).equals(e2.assignValue(assignments)).
-     * @param assignments the map with variable assignments, assignments != null.
+     * @param /assignments the map with variable assignments, assignments != null.
      * @return e1.assignValue(assignments).equals(e2.assignValue(assignments)).
      */
-    boolean getValue(IntVarConstMap assignments) {
-
+    @Override
+    public IntVarSet getVarSet() {
+        IntVarSet varSet = new IntVarSetImpl();
+        for (IntVar var : expression1) {
+            varSet.add(var);
+        }
+        for (IntVar var : expression2) {
+            varSet.add(var);
+        }
+        return varSet;
+    }
+    @Override
+    public boolean getValue(IntVarConstMap assignments) {
         //TODO: implement method.
-        return false;
+        return expression1.assignValue(assignments).equals(expression2.assignValue(assignments));
     }
 }

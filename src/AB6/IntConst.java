@@ -34,7 +34,10 @@ public class IntConst implements LinearExpression {
     public LinearExpression plus(IntVarTerm t) {
 
         //TODO: implement method.
-        return null; // return new SumOfTerms(t, this);
+        if (this.isZero()) {
+            return t;
+        }
+        return t.plus(this);// return new SumOfTerms(t, this);
     }
 
     @Override
