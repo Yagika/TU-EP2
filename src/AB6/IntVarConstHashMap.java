@@ -47,6 +47,7 @@ public class IntVarConstHashMap implements IntVarConstMap //TODO: uncomment clau
     public IntConst get(IntVar k) {
         return values[find(k)];
     }
+
     @Override
     public IntConst put(IntVar k, IntConst v) {
         if (k == null) {
@@ -63,6 +64,7 @@ public class IntVarConstHashMap implements IntVarConstMap //TODO: uncomment clau
         }
         return old;
     }
+
     private int find(IntVar k) {
         if (k == null) {
             return keys.length - 1;
@@ -73,6 +75,7 @@ public class IntVarConstHashMap implements IntVarConstMap //TODO: uncomment clau
         }
         return i;
     }
+
     @Override
     public IntConst remove(IntVar k) {
         int i = find(k);
@@ -92,10 +95,12 @@ public class IntVarConstHashMap implements IntVarConstMap //TODO: uncomment clau
         }
         return result;
     }
+
     @Override
     public boolean containsKey(IntVar k) {
         return keys[find(k)] != null;
     }
+
     @Override
     public int size() {
 
@@ -111,6 +116,7 @@ public class IntVarConstHashMap implements IntVarConstMap //TODO: uncomment clau
         keys = newKey;
         values = newValue;
     }
+
     public int hashCode() {
         int h = size;
         for (int i = 0; i < keys.length - 1; i++) {
@@ -123,6 +129,7 @@ public class IntVarConstHashMap implements IntVarConstMap //TODO: uncomment clau
         }
         return h;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -141,6 +148,7 @@ public class IntVarConstHashMap implements IntVarConstMap //TODO: uncomment clau
         }
         return true;
     }
+
     @Override
     public IntVarSet keySet() {
         IntVarSet keySet = new IntVarSetImpl();
@@ -150,6 +158,13 @@ public class IntVarConstHashMap implements IntVarConstMap //TODO: uncomment clau
             }
         }
         return keySet;
+    }
+
+    public IntVarSetSimple keySet(IntVar greaterThan) {
+        if (greaterThan <) {
+
+        }
+        return greaterThan();
     }
 }
 

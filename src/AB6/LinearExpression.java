@@ -48,7 +48,7 @@ public interface LinearExpression extends IntVarIterable {
     /**
      * Returns the product of 'this' and 'c'.
      * @param c the second operand for the product.
-     * @return the product of 'this' and 'c'.
+     * @return the product of 'this'extends Iterable<IntVar> and 'c'.
      */
     LinearExpression times(IntConst c);
 
