@@ -16,7 +16,7 @@ public class Test {
      */
     public static void main(String[] args) {
 
-        /* TODO: uncomment block.
+
 
         // create solar system with 12 bodies
         Body sun = new Body("Sun", 1.989E30,
@@ -130,8 +130,6 @@ public class Test {
         } catch (NoSuchElementException e) {
             System.out.println("Successful test");
         }
-
-        // TODO: end of block to uncomment. */
     }
 
     /**

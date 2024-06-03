@@ -3,14 +3,14 @@ package AB7;
 import java.util.*;
 
 /**
- * This class represents celestial bodies like stars, planets, asteroids, teapots, etc..
+ * This class represents celestial bodies like stars, planets, asteroids, teapots, etc.
  * This class implements 'HierarchicalSystem'.
  */
 //
 // TODO: Complete this class definition. You can use the Java-Collection-Framework.
 //       You can define further classes and methods for the implementation.
 //
-public class Body // implements HierarchicalSystem //TODO: activate clause.
+public class Body  implements HierarchicalSystem //TODO: activate clause.
 {
 
     private String name;
@@ -85,6 +85,39 @@ public class Body // implements HierarchicalSystem //TODO: activate clause.
     public double getRadius() {
 
         return SpaceDraw.massToRadius(this.mass);
+    }
+
+    @Override
+    public int getNumberOfBodies() {
+        return 1;
+    }
+
+    @Override
+    public Deque<Body> asOrderedList(SystemComparator comp) {
+        Deque<Body> orderedList = new ArrayDeque<>();
+        orderedList.add(this);
+        return orderedList;
+    }
+
+    @Override
+    public BodyIterator iterator() {
+        return new BodyIterator() {
+            private boolean hasNext = true;
+
+            @Override
+            public boolean hasNext() {
+                return hasNext;
+            }
+
+            @Override
+            public Body next() {
+                if (!hasNext) {
+                    throw new NoSuchElementException();
+                }
+                hasNext = false;
+                return Body.this;
+            }
+        };
     }
 
     @Override
