@@ -7,18 +7,22 @@ package AB8;
 public class LexicographicOrderComparator implements SystemComparator {
 
     //TODO: object variables and additional methods are private.
+    private SystemComparator primary;
+    private SystemComparator secondary;
 
     /**
      * Initializes this comparator as a comparator that first uses the 'primary' comparator and,
      * if the first comparison results in equality, uses the 'secondary' comparator.
      *
-     * @param primary the primary comparator to be used, must not be null.
+     * @param primary   the primary comparator to be used, must not be null.
      * @param secondary the secondary comparator to be used if the first comparator considers
-     *               two systems equal, must not be null.
+     *                  two systems equal, must not be null.
      */
     public LexicographicOrderComparator(SystemComparator primary, SystemComparator secondary) {
 
         //TODO: implement constructor.
+        this.primary = primary;
+        this.secondary = secondary;
     }
 
     @Override
@@ -35,6 +39,11 @@ public class LexicographicOrderComparator implements SystemComparator {
     public int compare(HierarchicalSystem s1, HierarchicalSystem s2) {
 
         //TODO: implement method.
-        return 0;
+        int primaryResult = primary.compare(s1, s2);
+        if (primaryResult != 0) {
+            return primaryResult;
+        } else {
+            return secondary.compare(s1, s2);
+        }
     }
 }

@@ -65,7 +65,7 @@ public class Simulation {
         Body oumuamua = new Body("Oumuamua", 8e6);
         Body himalia = new Body("Himalia", 6.7E18);
 
-        /* TODO: uncomment this block:
+
         HierarchicalSystem marsSystem = new MultiBody(mars,
                 phobos, deimos);
         HierarchicalSystem earthSystem = new MultiBody(earth, moon);
@@ -77,7 +77,6 @@ public class Simulation {
                 earthSystem, jupiterSystem, saturnSystem, uranus, neptune, venus, vesta, pallas,
                 hygiea, ceres, halley, voyager1, voyager2, oumuamua);
 
-        //TODO: end of block to uncomment.*/
 
         //TODO ('Bonusaufgabe'): implement simulation including validation of external data
         // according to 'Aufgabenblatt8.md'.

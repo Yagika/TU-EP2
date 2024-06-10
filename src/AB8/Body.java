@@ -1,5 +1,6 @@
 package AB8;
 
+import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
@@ -12,7 +13,7 @@ import java.util.NoSuchElementException;
 // TODO: Complete this class definition. You can use the Java-Collection-Framework.
 //       You can define further classes and methods for the implementation.
 //
-public class Body // implements HierarchicalSystem //TODO: activate clause.
+public class Body implements HierarchicalSystem //TODO: activate clause.
 {
 
     private String name;
@@ -98,6 +99,44 @@ public class Body // implements HierarchicalSystem //TODO: activate clause.
     public double getRadius() {
 
         return SpaceDraw.massToRadius(this.mass);
+    }
+
+    @Override
+    public int getNumberOfBodies() {
+        return 1;
+    }
+
+    @Override
+    public Deque<Body> asOrderedList(SystemComparator comp) {
+        Deque<AB8.Body> orderedList = new ArrayDeque<>();
+        orderedList.add(this);
+        return orderedList;
+    }
+
+    @Override
+    public BodyIterator iterator() {
+        return new BodyIterator() {
+            private boolean hasNext = true;
+
+            @Override
+            public boolean hasNext() {
+                return hasNext;
+            }
+
+            @Override
+            public AB8.Body next() {
+                if (!hasNext) {
+                    throw new NoSuchElementException();
+                }
+                hasNext = false;
+                return AB8.Body.this;
+            }
+
+            @Override
+            public void remove() {
+
+            }
+        };
     }
 
     @Override

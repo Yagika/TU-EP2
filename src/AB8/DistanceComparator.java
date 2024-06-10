@@ -7,7 +7,7 @@ package AB8;
 public class DistanceComparator implements SystemComparator {
 
     //TODO: object variables and additional methods are private.
-
+    private Vector3 reference;
     /**
      * Initializes this comparator with the reference point.
      *
@@ -16,6 +16,8 @@ public class DistanceComparator implements SystemComparator {
     public DistanceComparator(Vector3 reference) {
 
         //TODO: implement constructor.
+        this.reference = reference;
+
     }
 
     /**
@@ -26,7 +28,7 @@ public class DistanceComparator implements SystemComparator {
     public Vector3 getReference() {
 
         //TODO: implement method.
-        return null;
+        return this.reference;
     }
 
     @Override
@@ -42,6 +44,8 @@ public class DistanceComparator implements SystemComparator {
     public int compare(HierarchicalSystem s1, HierarchicalSystem s2) {
 
         //TODO: implement method.
-        return 0;
+        double distance1 = s1.getCenter().distanceTo(this.reference);
+        double distance2 = s2.getCenter().distanceTo(this.reference);
+        return Double.compare(distance1, distance2);
     }
 }

@@ -160,12 +160,6 @@ public class IntVarConstHashMap implements IntVarConstMap //TODO: uncomment clau
         return keySet;
     }
 
-    public IntVarSetSimple keySet(IntVar greaterThan) {
-        if (greaterThan <) {
-
-        }
-        return greaterThan();
-    }
 }
 
 // TODO: define further classes, if needed, either here or in a separate file.

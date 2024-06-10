@@ -18,6 +18,10 @@ public class NameComparator implements SystemComparator {
     public int compare(HierarchicalSystem b1, HierarchicalSystem b2) {
 
         //TODO: implement method.
-        return 0;
+        String name1 = b1.getName();
+        String name2 = b2.getName();
+
+        return name1.compareTo(name2);
+
     }
 }

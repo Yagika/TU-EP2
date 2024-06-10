@@ -18,6 +18,8 @@ public class MassComparator implements SystemComparator {
     public int compare(HierarchicalSystem s1, HierarchicalSystem s2) {
 
         //TODO: implement method.
-        return 0;
+        double mass1 = s1.getMass();
+        double mass2 = s2.getMass();
+        return Double.compare(mass1, mass2);
     }
 }

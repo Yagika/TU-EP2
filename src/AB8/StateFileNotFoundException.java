@@ -8,4 +8,10 @@ import java.io.FileNotFoundException;
 public class StateFileNotFoundException extends FileNotFoundException {
 
     // TODO: implement class
+    public StateFileNotFoundException(String message) {
+        super(message);
+    }
+    public StateFileNotFoundException(String message, Throwable cause) {
+        super(message);
+    }
 }
