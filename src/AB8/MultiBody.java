@@ -116,7 +116,7 @@ public class MultiBody implements HierarchicalSystem //TODO: activate clause.
 
         @Override
         public void remove() {
-
+            throw new UnsupportedOperationException("remove() is not supported.");
         }
     }
 }
