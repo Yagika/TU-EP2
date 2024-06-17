@@ -22,9 +22,9 @@ public class MultiBody implements HierarchicalSystem //TODO: activate clause.
      * Initializes this system with more than one subsystem.
      *
      * @param subsystems an array of components of this system (bodies or subsystems),
-     *           subsystems != null && subsystems.length > 1.
-     *           Refer to Java Varargs documentation for more details:
-     *           https://docs.oracle.com/javase/8/docs/technotes/guides/language/varargs.html
+     *                   subsystems != null && subsystems.length > 1.
+     *                   Refer to Java Varargs documentation for more details:
+     *                   https://docs.oracle.com/javase/8/docs/technotes/guides/language/varargs.html
      */
     public MultiBody(HierarchicalSystem... subsystems) {
 
@@ -118,6 +118,17 @@ public class MultiBody implements HierarchicalSystem //TODO: activate clause.
         public void remove() {
             throw new UnsupportedOperationException("remove() is not supported.");
         }
+    }
+    public List<HierarchicalSystem> systemsOrdered(SystemComparator comp){
+        List bodies = new ArrayList<>();
+        for (AB8.HierarchicalSystem subsystem : subsystems) {
+            bodies.addAll(subsystem.asOrderedList(comp));
+            if (subsystem == null) {
+                
+            }
+        }
+        bodies.sort(comp);
+        return bodies;
     }
 }
 
